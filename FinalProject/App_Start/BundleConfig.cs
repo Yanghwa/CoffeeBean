@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace FinalProject
+namespace CoffeeBean
 {
     public class BundleConfig
     {

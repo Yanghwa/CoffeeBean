@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FinalProject.Models
+namespace CoffeeBean.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

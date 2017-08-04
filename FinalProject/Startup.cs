@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(FinalProject.Startup))]
-namespace FinalProject
+[assembly: OwinStartupAttribute(typeof(CoffeeBean.Startup))]
+namespace CoffeeBean
 {
     public partial class Startup
     {

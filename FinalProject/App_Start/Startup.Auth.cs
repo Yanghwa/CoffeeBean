@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using FinalProject.Models;
+using CoffeeBean.Models;
 
-namespace FinalProject
+namespace CoffeeBean
 {
     public partial class Startup
     {
