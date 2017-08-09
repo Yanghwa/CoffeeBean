@@ -13,7 +13,6 @@ namespace FinalProject.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate { get; set; }
         [Display(Name = "Edit Date")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime EditDate { get; set; } = DateTime.UtcNow;
     }
 }

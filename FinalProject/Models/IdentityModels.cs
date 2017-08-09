@@ -3,6 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using FinalProject.Models;
 
 namespace CoffeeBean.Models
 {
@@ -16,6 +20,9 @@ namespace CoffeeBean.Models
             // Add custom user claims here
             return userIdentity;
         }
+        [Display(Name = "Ratings")]
+        [InverseProperty("User")]
+        public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
