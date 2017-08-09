@@ -196,6 +196,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\about-bg.jpg" />
+    <Content Include="img\account.jpg" />
     <Content Include="img\contact-bg.jpg" />
     <Content Include="img\home-bg.jpg" />
     <Content Include="img\post-bg.jpg" />
