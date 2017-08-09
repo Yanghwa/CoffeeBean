@@ -25,7 +25,12 @@ namespace CoffeeBean
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/clean-blog.min.css",
+                      "~/Content/font-awesome.min.css"));
+
+            bundles.Add(new ScriptBundle("~/cleanjs/clean").Include(
+                      "~/Scripts/clean-blog.min.js"));
         }
     }
 }
