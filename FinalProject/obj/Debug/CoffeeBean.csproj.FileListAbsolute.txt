@@ -66,4 +66,3 @@ C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\bin\Microsoft.Ow
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\FinalProject.dll
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\FinalProject.pdb
-C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\CoffeeBean.csprojResolveAssemblyReference.cache
