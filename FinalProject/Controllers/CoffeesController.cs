@@ -10,11 +10,13 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class CoffeesController : Controller
     {
         private DataContext db = new DataContext();
 
         // GET: Coffees
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var coffees = db.Coffees.AsQueryable();
@@ -25,6 +27,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: Coffees/Details/5
+        [AllowAnonymous]
         public ActionResult Details(string id)
         {
             if (id == null)
