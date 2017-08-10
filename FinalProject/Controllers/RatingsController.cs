@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinalProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FinalProject.Controllers
 {
@@ -40,7 +41,6 @@ namespace FinalProject.Controllers
         public ActionResult Create()
         {
             ViewBag.BeanId = new SelectList(db.Beans, "BeanId", "Name");
-            //ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "Email");
             return View();
         }
 
@@ -59,7 +59,6 @@ namespace FinalProject.Controllers
             }
 
             ViewBag.BeanId = new SelectList(db.Beans, "BeanId", "Name", rating.BeanId);
-            //ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "Email", rating.UserId);
             return View(rating);
         }
 
@@ -76,7 +75,6 @@ namespace FinalProject.Controllers
                 return HttpNotFound();
             }
             ViewBag.BeanId = new SelectList(db.Beans, "BeanId", "Name", rating.BeanId);
-            //ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "Email", rating.UserId);
             return View(rating);
         }
 
@@ -94,10 +92,37 @@ namespace FinalProject.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.BeanId = new SelectList(db.Beans, "BeanId", "Name", rating.BeanId);
-            //ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "Email", rating.UserId);
             return View(rating);
         }
 
+        [HttpPost]
+        public Rating SetRating(string BeanId, int Rank)
+        {
+            Rating rating = new Rating();
+            rating.RatingId = Guid.NewGuid().ToString();
+            rating.CreateDate = DateTime.Now;
+            rating.EditDate = rating.CreateDate;
+
+            rating.UserId = User.Identity.GetUserId();
+            rating.BeanId = BeanId;
+            rating.Rank = Rank;
+            db.Ratings.Add(rating);
+            db.SaveChanges();
+
+            rating = db.Ratings
+                .Include(x => x.Bean)
+                .Include(x => x.Bean.Ratings)
+                .Include(x => x.User)
+                .SingleOrDefault(x => x.RatingId == rating.RatingId);
+
+            return (rating);
+        }
+
+        public PartialViewResult RatingsControl(string beanId)
+        {
+            Bean bean = db.Beans.Find(beanId);
+            return PartialView("_RatingsControl", bean);
+        }
         // GET: Ratings/Delete/5
         public ActionResult Delete(string id)
         {

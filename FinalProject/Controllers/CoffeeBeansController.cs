@@ -53,9 +53,20 @@ namespace FinalProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.CoffeeBeans.Add(coffeeBean);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Models.CoffeeBean tmpCoffeeBean = db.CoffeeBeans.SingleOrDefault(y => y.BeanId == coffeeBean.BeanId && y.CoffeeId == coffeeBean.CoffeeId && y.CoffeeBeanId == coffeeBean.CoffeeBeanId);
+                if (tmpCoffeeBean == null)
+                {
+                    coffeeBean.CoffeeBeanId = Guid.NewGuid().ToString();
+                    coffeeBean.CreateDate = DateTime.Now;
+                    coffeeBean.EditDate = coffeeBean.CreateDate;
+                    db.CoffeeBeans.Add(coffeeBean);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate entry found");
+                }
             }
 
             ViewBag.BeanId = new SelectList(db.Beans, "BeanId", "Name", coffeeBean.BeanId);
@@ -89,7 +100,11 @@ namespace FinalProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(coffeeBean).State = EntityState.Modified;
+                var tmpCoffeeBean = db.CoffeeBeans.Find(coffeeBean.CoffeeBeanId);
+                tmpCoffeeBean.EditDate = DateTime.Now;
+                tmpCoffeeBean.BeanId = coffeeBean.BeanId;
+                tmpCoffeeBean.CoffeeId = coffeeBean.CoffeeId;
+                db.Entry(tmpCoffeeBean).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

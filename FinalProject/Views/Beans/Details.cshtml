@@ -21,11 +21,22 @@
         <dt>
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Coffees)
+        </dt>
+        <dd>
+            <ul>
+                @foreach (var coffeeBean in Model.Coffees)
+                {
 
+                    <li>@coffeeBean.Coffee.Name</li>
+                }
+
+            </ul>
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreateDate)
         </dt>
@@ -41,10 +52,48 @@
         <dd>
             @Html.DisplayFor(model => model.EditDate)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.Ratings)
+        </dt>
+        <dd id="RatingsControl">
+            @{ Html.RenderAction("RatingsControl", "Ratings", new { beanId = Model.BeanId });}
+        </dd>
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.BeanId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function SetRatingControlCallbacks() {
+            var rank = $("#RatingsControl a[name='Rank']");
+            rank.on('click', SetRating);
+        }
+
+        function SetRating(e) {
+            var data = { beanId: $(this).data("beanid"), rank: $(this).data("rank") };
+            $.post("@Url.Action("SetRating","Ratings")", data)
+                .done(function (response, status, jqxhr) {
+                    var url = "@Url.Action("RatingsControl","Ratings")";
+                    $("#RatingsControl").load(url, { beanId: data.beanId }, function (responseText, statusText, xhr) {
+                        switch (statusText) {
+                            case "success":
+                                SetRatingControlCallbacks();
+                                break;
+                            default:
+                                break;
+                        }
+                        if (responseText.length == 0) {
+
+                        }
+                    });
+                })
+                .fail(function (jqxhr, status, error) { });
+        }
+
+        $(document).ready(SetRatingControlCallbacks);
+    </script>
+}

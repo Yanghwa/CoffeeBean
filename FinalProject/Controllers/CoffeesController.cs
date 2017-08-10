@@ -21,7 +21,7 @@ namespace FinalProject.Controllers
 
             coffees = coffees.OrderBy(x => x.Name).AsQueryable();
 
-            return View(db.Coffees.ToList());
+            return View(coffees.ToList());
         }
 
         // GET: Coffees/Details/5

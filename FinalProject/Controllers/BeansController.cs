@@ -17,7 +17,11 @@ namespace FinalProject.Controllers
         // GET: Beans
         public ActionResult Index()
         {
-            return View(db.Beans.ToList());
+            var beans = db.Beans.AsQueryable();
+
+            beans = beans.OrderBy(x => x.Name).AsQueryable();
+
+            return View(beans.ToList());
         }
 
         // GET: Beans/Details/5
@@ -38,7 +42,9 @@ namespace FinalProject.Controllers
         // GET: Beans/Create
         public ActionResult Create()
         {
-            return View();
+            Bean bean = new Bean();
+            ViewBag.Coffees = new MultiSelectList(db.Coffees.ToList(), "CoffeeId", "Name", bean.Coffees.Select(x => x.CoffeeId).ToArray());
+            return View(bean);
         }
 
         // POST: Beans/Create
@@ -46,15 +52,37 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BeanId,Name,Price,CreateDate,EditDate")] Bean bean)
+        public ActionResult Create([Bind(Include = "Name,Price,CoffeeIds")] Bean bean, string[] CoffeeIds)
         {
             if (ModelState.IsValid)
             {
-                db.Beans.Add(bean);
-                db.SaveChanges();
+                Bean checkbean = db.Beans.SingleOrDefault(x => x.Name == bean.Name);
+                if (checkbean == null)
+                {
+                    db.Beans.Add(bean);
+                    db.SaveChanges();
+                }
+                if (CoffeeIds != null)
+                {
+
+                    foreach (string coffeeId in CoffeeIds)
+                    {
+                        Models.CoffeeBean coffeeBean = new Models.CoffeeBean();
+                        
+                        coffeeBean.BeanId = bean.BeanId;
+                        coffeeBean.CoffeeId = coffeeId;
+                        bean.Coffees.Add(coffeeBean);
+                    }
+                    db.Entry(bean).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
-
+            else
+            {
+                ModelState.AddModelError("", "Duplicate Bean detected.");
+            }
+            ViewBag.Coffees = new MultiSelectList(db.Coffees.ToList(), "CoffeeId", "Name", CoffeeIds);
             return View(bean);
         }
 
@@ -70,6 +98,7 @@ namespace FinalProject.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Coffees = new MultiSelectList(db.Coffees.ToList(), "CoffeeId", "Name", bean.Coffees.Select(x => x.CoffeeId).ToArray());
             return View(bean);
         }
 
@@ -78,14 +107,57 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BeanId,Name,Price,CreateDate,EditDate")] Bean bean)
+        public ActionResult Edit([Bind(Include = "BeanId,Name,Price,CoffeeIds")] Bean bean, string[] CoffeeIds)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(bean).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Bean tmpBean = db.Beans.Find(bean.BeanId);
+                if (tmpBean != null)
+                {
+                    Bean checkBean = db.Beans.SingleOrDefault(x => x.Name == bean.Name && x.BeanId != bean.BeanId);
+                    if (checkBean == null)
+                    {
+                        tmpBean.Name = bean.Name;
+                        tmpBean.EditDate = DateTime.Now;
+                        tmpBean.Price = bean.Price;
+
+                        db.Entry(tmpBean).State = EntityState.Modified;
+
+                        //items to remove
+                        var removeItems = tmpBean.Coffees.Where(x => !CoffeeIds.Contains(x.CoffeeId)).ToList();
+                        foreach (var removeItem in removeItems)
+                        {
+                            db.Entry(removeItem).State = EntityState.Deleted;
+                        }
+                        //items to add
+                        if (CoffeeIds != null)
+                        {
+                            var addItems = CoffeeIds.Where(x => !tmpBean.Coffees.Select(y => y.CoffeeId).Contains(x));
+                            foreach (var addItem in addItems)
+                            {
+                                Models.CoffeeBean coffeeBean = new Models.CoffeeBean();
+
+                                coffeeBean.CoffeeBeanId = Guid.NewGuid().ToString();
+                                coffeeBean.CreateDate = DateTime.Now;
+                                coffeeBean.EditDate = coffeeBean.CreateDate;
+
+                                coffeeBean.BeanId = tmpBean.BeanId;
+                                coffeeBean.CoffeeId = addItem;
+                                db.CoffeeBeans.Add(coffeeBean);
+                            }
+                        }
+
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicate Bean detected.");
+                    }
+                }
             }
+            //ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name", game.GenreId);
+            ViewBag.Genres = new MultiSelectList(db.Coffees.ToList(), "CoffeeId", "Name", CoffeeIds);
             return View(bean);
         }
 
@@ -110,7 +182,12 @@ namespace FinalProject.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Bean bean = db.Beans.Find(id);
+            foreach (var coffeeBean in bean.Coffees.ToList())
+            {
+                db.CoffeeBeans.Remove(coffeeBean);
+            }
             db.Beans.Remove(bean);
+            var removed = db.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -30,3 +30,7 @@ textarea {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.checkbox ul {
+    list-style-type: none;
+}

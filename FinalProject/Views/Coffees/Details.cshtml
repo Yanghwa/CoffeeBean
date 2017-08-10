@@ -25,7 +25,19 @@
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Beans)
+        </dt>
+        <dd>
+            <ul>
+                @foreach (var coffeeBean in Model.Beans)
+                {
 
+                    <li>@coffeeBean.Bean.Name</li>
+                }
+
+            </ul>
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreateDate)
         </dt>

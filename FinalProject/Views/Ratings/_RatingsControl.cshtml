@@ -1,0 +1,22 @@
+﻿@model FinalProject.Models.Bean
+
+@{
+    if (Model.Ratings.Count() > 0)
+    {
+        <p>The overall rating of this Bean is @Model.Ratings.Average(x => x.Rank)</p>
+
+    }
+    else
+    {
+        <p>no ratings yet.</p>
+
+    }
+    if (Request.IsAuthenticated)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            <a href="#" name="Rank" data-rank="@i" data-beanid="@Model.BeanId"><i class="glyphicon glyphicon-star@(Model.OverallRating < i ? "-empty":"")"></i></a>
+        }
+    }
+}
+
