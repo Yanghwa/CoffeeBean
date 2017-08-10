@@ -68,5 +68,4 @@ C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\bin\Microsoft.Ow
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\FinalProject.Migrations.InitialMigration.resources
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\CoffeeBeanProject.csproj.GenerateResource.Cache
-C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\CoffeeBeanProject.csprojResolveAssemblyReference.cache
 C:\Users\Junghwan Yang\Desktop\COMP2007\CoffeeBean\FinalProject\obj\Debug\FinalProject.Migrations.ch_editd.resources
