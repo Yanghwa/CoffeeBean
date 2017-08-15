@@ -3,60 +3,78 @@
 @{
     ViewBag.Title = "Details";
 }
+<header class="intro-header" style="background-image: url('../img/post-sample-image.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1>For Sale</h1>
+                    <hr class="small">
+                    <span class="subheading">Our favorite coffee</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h2>Details</h2>
 
-<h2>Details</h2>
+            <div>
+                <h4>Coffee</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
 
-<div>
-    <h4>Coffee</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Beans)
+                    </dt>
+                    <dd>
+                        <ul>
+                            @foreach (var coffeeBean in Model.Beans)
+                            {
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Beans)
-        </dt>
-        <dd>
-            <ul>
-                @foreach (var coffeeBean in Model.Beans)
-                {
+                                <li>@coffeeBean.Bean.Name</li>
+                            }
 
-                    <li>@coffeeBean.Bean.Name</li>
-                }
+                        </ul>
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CreateDate)
+                    </dt>
 
-            </ul>
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CreateDate)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateDate)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EditDate)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EditDate)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EditDate)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EditDate)
-        </dd>
-
-    </dl>
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.CoffeeId }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CoffeeId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
