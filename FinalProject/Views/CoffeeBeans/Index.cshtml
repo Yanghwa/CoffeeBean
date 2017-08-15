@@ -22,7 +22,10 @@
             <h2>Coffee Beans</h2>
 
             <p>
-                @Html.ActionLink("Create New", "Create")
+                @if (Request.IsAuthenticated)
+                {
+                    @Html.ActionLink("Create New", "Create")
+                }
             </p>
             <table class="table">
                 <tr>
@@ -57,9 +60,14 @@
                             @Html.DisplayFor(modelItem => item.EditDate)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.CoffeeBeanId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.CoffeeBeanId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.CoffeeBeanId })
+                            @Html.ActionLink("Details", "Details", new { id = item.BeanId })
+                            @if (Request.IsAuthenticated)
+                            {
+                                @Html.Raw(" | ")
+                                @Html.ActionLink("Edit", "Edit", new { id = item.BeanId })
+                                @Html.Raw(" | ")
+                                @Html.ActionLink("Delete", "Delete", new { id = item.BeanId })
+                            }
                         </td>
                     </tr>
                 }

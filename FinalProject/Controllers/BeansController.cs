@@ -10,11 +10,13 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class BeansController : Controller
     {
         private DataContext db = new DataContext();
 
         // GET: Beans
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var beans = db.Beans.AsQueryable();
@@ -25,6 +27,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: Beans/Details/5
+        [AllowAnonymous]
         public ActionResult Details(string id)
         {
             if (id == null)

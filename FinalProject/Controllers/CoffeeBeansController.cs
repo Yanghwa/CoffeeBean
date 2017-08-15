@@ -10,6 +10,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class CoffeeBeansController : Controller
     {
         private DataContext db = new DataContext();
